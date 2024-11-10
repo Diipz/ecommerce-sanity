@@ -11,7 +11,7 @@ import DisableDraftModeBtn from "@/components/DisableDraftModeBtn";
 
 export const metadata: Metadata = {
   title: "Shopr Ecommerce",
-  description: "An ecommerce platform with a content management system",
+  description: "Your e-commerce platform with a friendly content management system",
 };
 
 export default async function RootLayout({
