@@ -29,7 +29,7 @@ export default function AddToBasketButton({ product, disabled, stock }: AddToBas
     const isAddButtonDisabled = itemCount >= stock || disabled;
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-2 space-x-2">
+        <div className="flex flex-col items-center justify-center space-x-2">
             {isAddButtonDisabled && (
                 <div className="text-xl font-bold text-gray-400"
                 >No more stock currently available</div>

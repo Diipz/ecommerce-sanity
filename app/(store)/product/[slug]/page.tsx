@@ -56,7 +56,7 @@ export default async function ProductPage({
                             )}
                         </div>
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-4">
                         <AddToBasketButton
                             product={product}
                             disabled={isOutOfStock}
