@@ -1,7 +1,7 @@
 "use client"
 
 import { createCheckoutSession, Metadata } from "@/actions/createCheckoutSession";
-import AddToBasketButton from "@/components/AddToBasketButton";
+import AddToBasketAtCheckout from "@/components/AddToBasketAtCheckout";
 import Loader from "@/components/Loader";
 import { imageUrl } from "@/lib/imageUrl";
 import useBasketStore from "@/store/store"
@@ -102,7 +102,7 @@ export default function BasketPage() {
                             </div>
 
                             <div className="flex items-center ml-4 flex-shrink-0">
-                                <AddToBasketButton product={item.product} />
+                                <AddToBasketAtCheckout product={item.product} stock={item.product.stock as number} />
                             </div>
                         </div>
                     ))}
