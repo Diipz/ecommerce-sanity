@@ -1,5 +1,4 @@
 import AddToBasketButton from "@/components/AddToBasketButton";
-import { Button } from "@/components/ui/button";
 import { imageUrl } from "@/lib/imageUrl";
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import { PortableText } from "next-sanity";
@@ -23,6 +22,7 @@ export default async function ProductPage({
         return notFound();
     }
 
+    const stock = product.stock as number;
     const isOutOfStock = product.stock != null && product.stock <= 0;
 
     return (
@@ -57,8 +57,11 @@ export default async function ProductPage({
                         </div>
                     </div>
                     <div className="mt-6">
-                        <AddToBasketButton product={product} disabled={isOutOfStock} />
-                        <Button>Add to Basket</Button>
+                        <AddToBasketButton
+                            product={product}
+                            disabled={isOutOfStock}
+                            stock={stock}
+                        />
                     </div>
                 </div>
             </div>
