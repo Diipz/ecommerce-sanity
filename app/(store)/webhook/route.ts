@@ -5,16 +5,20 @@ import { BackendClient } from "@/sanity/lib/backendClient";
 import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
 
+
+
 export async function POST(req: NextRequest) {
     const body = await req.text();
     const headersList = await headers();
     const sig = headersList.get("stripe-signature");
 
     if (!sig) {
+        console.error("No Stripe signature found in headers");
         return NextResponse.json({ error: "No signature" }, { status: 400 });
     }
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    // const webhookSecret = "whsec_6d98dfe5c64824965ffdc15d58d27ffbae58ef5cdd699b8bde1ec39bb65ac6e9"
 
     if (!webhookSecret) {
         console.log("Stripe webhook secret is not set");
@@ -84,6 +88,7 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
         },
         quantity: item.quantity || 0
     }))
+
 
     // Create order in Sanity
     const order = await BackendClient.create({
