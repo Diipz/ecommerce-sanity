@@ -9,7 +9,7 @@ const aj = arcjet({
     fixedWindow({
       mode: "LIVE",
       window: "1h",
-      max: 2,
+      max: 200,
     }),
   ],
 });
