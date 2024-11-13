@@ -3,7 +3,6 @@
 import { imageUrl } from "@/lib/imageUrl";
 import stripe from "@/lib/stripe";
 import { BasketItem } from "@/store/store";
-import { currentUser } from "@clerk/nextjs/server";
 
 
 export type Metadata = {
@@ -22,12 +21,6 @@ export async function createCheckoutSession(
     items: GroupedBasketItem[],
     metadata: Metadata
 ) {
-    const user = await currentUser();
-
-    if (!user) {
-        throw new Error("User not signed in");
-    }
-    
     try {
         // Check if any grouped items don't have a price
         const itemsWithoutPrice = items.filter((item) => !item.product.price)
