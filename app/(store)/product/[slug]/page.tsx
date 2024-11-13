@@ -5,8 +5,8 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-static";
-export const revalidate = 3600; // revalidate at most every hour (3600 seconds)
+// export const dynamic = "force-static";
+// export const revalidate = 3600; // revalidate at most every hour (3600 seconds)
 
 export default async function ProductPage({
     params
