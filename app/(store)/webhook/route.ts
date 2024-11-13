@@ -6,7 +6,6 @@ import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
 
 
-
 export async function POST(req: NextRequest) {
     const body = await req.text();
     const headersList = await headers();
