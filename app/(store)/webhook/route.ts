@@ -6,6 +6,7 @@ import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
 
 
+
 export async function POST(req: NextRequest) {
     const body = await req.text();
     const headersList = await headers();
@@ -86,6 +87,38 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
         },
         quantity: item.quantity || 0
     }))
+
+    // Update stock on Sanity for each product
+
+    // Step 1: Check current stock levels for each product in Sanity
+    for (const item of sanityProducts) {
+        const productId = item.product._ref;
+        const purchasedQuantity = item.quantity;
+
+        if (productId && purchasedQuantity) {
+            try {
+                const product = await BackendClient.fetch(`*[_type == "product" && _id == $id][0]`, { id: productId });
+                
+                if (!product || typeof product.stock !== "number") {
+                    console.warn(`Product with ID ${productId} not found or stock is not a number.`);
+                    continue;
+                }
+
+                // Step 2: Calculate the new stock level
+                const newStockLevel = product.stock - purchasedQuantity;
+
+                // Step 3: Update the stock in Sanity
+                await BackendClient.patch(productId)
+                    .set({ stock: newStockLevel })
+                    .commit();
+
+                console.log(`Updated stock for product ID ${productId}: ${newStockLevel}`);
+            } catch (error) {
+                console.error(`Error updating stock for product ID ${productId}:`, error);
+                throw new Error(`Failed to update stock for product ID ${productId}`);
+            }
+        }
+    }
 
 
     // Create order in Sanity
