@@ -25,7 +25,7 @@ const clerk = clerkMiddleware(async (auth, req) => {
     fixedWindow({
       mode: "LIVE",
       window: "1h",
-      max: 10,
+      max: Number(process.env.ARCJET_API_LIMIT),
     }),
   ],
 });
