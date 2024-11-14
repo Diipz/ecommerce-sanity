@@ -4,6 +4,8 @@ import Stripe from "stripe";
 import { BackendClient } from "@/sanity/lib/backendClient";
 import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
+import { getPurchasedProductSlugs } from "@/sanity/lib/products/getPurchasedProductSlugs";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -90,6 +92,9 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
 
     // Update stock on Sanity for each product
 
+    // Collect product IDs for revalidation
+    const purchasedProductIds = [];
+
     // Step 1: Check current stock levels for each product in Sanity
     for (const item of sanityProducts) {
         const productId = item.product._ref;
@@ -112,7 +117,7 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
                     .set({ stock: newStockLevel })
                     .commit();
 
-                console.log(`Updated stock for product ID ${productId}: ${newStockLevel}`);
+                purchasedProductIds.push(productId);
             } catch (error) {
                 console.error(`Error updating stock for product ID ${productId}:`, error);
                 throw new Error(`Failed to update stock for product ID ${productId}`);
@@ -140,6 +145,16 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
         status: "paid",
         orderDate: new Date().toISOString()
     })
+
+
+    // REMOVE if changing to dyunamic rendering
+    // Fetch slugs for purchased products and revalidate paths
+    const slugs = await getPurchasedProductSlugs(purchasedProductIds);
+    slugs.forEach((slug: string) => {
+        revalidatePath(`/products/${slug}`);
+    });
+
+    revalidatePath("/");
 
     return order;
 }
