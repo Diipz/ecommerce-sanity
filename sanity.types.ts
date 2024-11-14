@@ -506,7 +506,7 @@ export type PRODUCT_BY_ID_QUERYResult = {
   stock?: number;
 } | null;
 
-// Source: ./sanity/lib/products/getProductsByCategory.tsx
+// Source: ./sanity/lib/products/getProductsByCategory.ts
 // Variable: PRODUCTS_BY_CATEGORY_QUERY
 // Query: *[            _type == "product"            && references(*[_type == "category" && slug.current == $categorySlug]._id)        ] | order(name asc)
 export type PRODUCTS_BY_CATEGORY_QUERYResult = Array<{
@@ -567,6 +567,13 @@ export type PRODUCTS_BY_CATEGORY_QUERYResult = Array<{
     [internalGroqTypeReferenceTo]?: "category";
   }>;
   stock?: number;
+}>;
+
+// Source: ./sanity/lib/products/getPurchasedProductSlugs.ts
+// Variable: PRODUCT_SLUGS_QUERY
+// Query: *[            _type == "product" && _id in $productIds        ] {            "slug": slug.current        }
+export type PRODUCT_SLUGS_QUERYResult = Array<{
+  slug: string | null;
 }>;
 
 // Source: ./sanity/lib/products/searchProductsByName.ts
@@ -659,6 +666,7 @@ declare module "@sanity/client" {
     "\n        *[\n            _type == \"product\"\n        ] | order(name asc)\n        ": ALL_PRODUCTS_QUERYResult;
     "\n        *[\n            _type == \"product\" \n            && slug.current == $slug\n        ] | order(name asc)[0]\n    ": PRODUCT_BY_ID_QUERYResult;
     "\n        *[\n            _type == \"product\"\n            && references(*[_type == \"category\" && slug.current == $categorySlug]._id)\n        ] | order(name asc)\n    ": PRODUCTS_BY_CATEGORY_QUERYResult;
+    "\n        *[\n            _type == \"product\" && _id in $productIds\n        ] {\n            \"slug\": slug.current\n        }\n    ": PRODUCT_SLUGS_QUERYResult;
     "\n        *[ \n            _type == \"product\"\n            && name match $searchParam\n        ]\n        | order(name asc)\n    ": PRODUCT_SEARCH_QUERYResult;
     "\n        *[\n            _type == \"sale\"\n            && isActive == true\n            && couponCode == $couponCode\n        ] | order(validFrom desc)[0]\n    ": ACTIVE_SALE_BY_COUPON_QUERYResult;
   }

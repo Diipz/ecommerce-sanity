@@ -150,7 +150,7 @@ async function CreateOrderInSanity(session: Stripe.Checkout.Session) {
     // REMOVE if changing to dyunamic rendering
     // Fetch slugs for purchased products and revalidate paths
     const slugs = await getPurchasedProductSlugs(purchasedProductIds);
-    slugs.forEach((slug: string) => {
+    slugs.forEach((slug: string | null) => {
         revalidatePath(`/products/${slug}`);
     });
 

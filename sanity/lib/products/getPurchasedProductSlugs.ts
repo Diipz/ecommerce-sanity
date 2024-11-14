@@ -24,7 +24,7 @@ export const getPurchasedProductSlugs = async (productIds: string[]) => {
         });
 
         // Map the results to extract only the slug strings
-        const slugs = result.data.map((product: { slug: string }) => product.slug);
+        const slugs = result.data.map((product: { slug: string | null }) => product.slug);
 
         return slugs;
     } catch (error) {
