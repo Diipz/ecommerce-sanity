@@ -27,7 +27,7 @@ export default function BasketContents() {
     const [isLoading, setIsLoading] = useState(false);
     const [stockData, setStockData] = useState<ProductStock[]>([]);
     const [showDialog, setShowDialog] = useState(false);
-    const [adjustedMessage, setAdjustedMessage] = useState("");
+    const [adjustedMessage, setAdjustedMessage] = useState<string[]>([]);
 
     useEffect(() => {
         setIsClient(true);
