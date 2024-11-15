@@ -4,13 +4,13 @@ import { Product } from "@/sanity.types"
 import useBasketStore from "@/store/store";
 import { useEffect, useState } from "react";
 
-interface AddToBasketButtonProps {
+interface AddToBasketAtCheckoutProps {
     product: Product;
     disabled?: boolean;
     stock: number
 }
 
-export default function AddToBasketButton({ product, disabled, stock }: AddToBasketButtonProps) {
+export default function AddToBasketAtCheckout({ product, disabled, stock }: AddToBasketAtCheckoutProps) {
     const { addItem, removeItem, getItemCount } = useBasketStore();
     const itemCount = getItemCount(product._id);
 
@@ -33,10 +33,9 @@ export default function AddToBasketButton({ product, disabled, stock }: AddToBas
             <button
                 onClick={() => removeItem(product._id)}
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${itemCount === 0
-                    ? "bg-gray-100 cursor-not-allowed"
+                    ? "bg-gray-100"
                     : "bg-gray-200 hover:bg-gray-300"
                     }`}
-                disabled={itemCount === 0 || disabled}
             >
                 <span className={`text-xl font-bold ${itemCount === 0 ? "text-gray-400" : "text-gray-600"}`}
                 >-</span>
