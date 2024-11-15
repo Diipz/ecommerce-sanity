@@ -119,7 +119,6 @@ export default function BasketContents() {
                     {groupedItems?.map((item) => {
                         const stockInfo = stockData.find(stockItem => stockItem._id === item.product._id);
                         const currentStock = stockInfo ? stockInfo.stock : item.product.stock;
-
                         return (
                             <div
                                 key={item.product._id}
@@ -237,7 +236,6 @@ export default function BasketContents() {
                     </dialog>
                 </div>
             )}
-            s
         </div>
     );
 }
